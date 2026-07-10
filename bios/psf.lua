@@ -1,3 +1,6 @@
+-- credit: jojotastic777
+-- optimized by ususstudios
+
 local color = loadfile("bios:/color.lua")()
 
 local byte = string.byte
@@ -66,7 +69,7 @@ function makeFont(path)
 	local glyphs = {}
 	for glyphNum = 0, numGlyphs - 1 do
 		local glyph = {}
-		for byteNum = 1, bytesPerGlyph do
+		for _ = 1, bytesPerGlyph do
 			local readByte = readUInt(handle, 1)
 			for bitNum = 7, 0, -1 do
 				table.insert(glyph, band(1, rshift(readByte, bitNum)))
@@ -95,7 +98,14 @@ function makeFont(path)
 			bgCache[foreground] = fgCache
 		end
 
-		local buffer = fgCache[c]
+		local charSpacingCache = bgCache[charSpacing]
+		if not charSpacingCache then
+			charSpacingCache = {}
+			fgCache[charSpacing] = charSpacingCache
+		end
+
+		local buffer = charSpacingCache[c]
+
 		if not buffer then
 			local glyph = glyphs[byte(char)]
 			buffer = {}
