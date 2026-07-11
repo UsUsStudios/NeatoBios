@@ -79,12 +79,16 @@ local function launchBootOption(bootOption)
 	render()
 end
 
-local function main()
-	if files.isFile("0:system:/boot/cfg/boot.lua") then
-		bootCfg = loadfile("0:system:/boot/cfg/boot.lua")()
-	else
-		return
+local function loadBootCfg()
+	for _, disk in pairs(files.getDisks()) do
+		for _, bootOption in ipairs(loadfile(disk .. ":system:/boot/cfg/boot.lua")()) do
+			table.insert(bootCfg, bootOption)
+		end
 	end
+end
+
+local function main()
+	loadBootCfg()
 
 	local prevSelectedOption = 0
 
