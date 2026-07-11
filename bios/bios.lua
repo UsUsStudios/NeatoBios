@@ -43,6 +43,7 @@ local function drawBootOptions()
 end
 
 local function render()
+	screen.fill(0, 0, 0)
 	screen.drawRectangle(
 		fontWidth * 3,
 		3 + fontHeight * 5,
@@ -75,6 +76,7 @@ local function launchBootOption(bootOption)
 	else
 		loadfile(bootOption["OS Boot Path"])()(args)
 	end
+	render()
 end
 
 local function main()
@@ -87,8 +89,6 @@ local function main()
 	local prevSelectedOption = 0
 
 	while true do
-		screen.fill(0, 0, 0)
-
 		local data = event.getFirst("user", "keyPressed")
 		while data ~= nil do
 			local _, keyPressed, code, letter, modifiers = table.unpack(data)
@@ -107,6 +107,23 @@ local function main()
 		end
 		prevSelectedOption = selectedOption
 	end
+end
+
+local function benchmark()
+	local start = chip.getTime()
+	print("Test suite started")
+	require("benchmarks.binarytrees")(10)
+	print(chip.getTime() - start)
+	require("benchmarks.array3d")(130)
+	print(chip.getTime() - start)
+	require("benchmarks.chameos")(200000)
+	print(chip.getTime() - start)
+	require("benchmarks.coroutine_ring")(500000)
+	print(chip.getTime() - start)
+	require("benchmarks.fannkuch_redux")(50)
+	print(chip.getTime() - start)
+	require("benchmarks.fasta")(90)
+	print("Test suite finished in " .. chip.getTime() - start .. " seconds")
 end
 
 main()
