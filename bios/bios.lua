@@ -1,3 +1,25 @@
+local function deepCopy(obj, seen)
+	if type(obj) ~= "table" then
+		return obj
+	end
+
+	seen = seen or {}
+
+	if seen[obj] then
+		return seen[obj]
+	end
+
+	local copy = {}
+	seen[obj] = copy
+
+	for k, v in pairs(obj) do
+		copy[deepCopy(k, seen)] = deepCopy(v, seen)
+	end
+	return copy
+end
+
+local _G_COPY = deepCopy(_G)
+
 -- Load jojotastic777's files shim and require shim
 do
 	local handle = files.open("bios:/files-shim.lua")
@@ -68,7 +90,7 @@ local function render()
 end
 
 local function launchBootOption(bootOption)
-	local env = _G
+	local env = deepCopy(_G_COPY)
 	local envVars = bootOption["OS Environment Variable Definition"]
 	if envVars ~= nil then
 		for var, val in pairs(envVars) do
