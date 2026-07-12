@@ -7,6 +7,8 @@ local function main(arg1, arg2)
 	font.drawLine(3, 3, "Hello")
 	font.drawLine(3, 16, a1)
 	font.drawLine(3, 29, a2)
+	font.drawLine(3, 42, "" .. EXAMPLEVAR)
+	font.drawLine(3, 58, VAR2)
 	screen.draw()
 end
 

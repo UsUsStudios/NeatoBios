@@ -68,13 +68,22 @@ local function render()
 end
 
 local function launchBootOption(bootOption)
+	local env = _G
+	local envVars = bootOption["OS Environment Variable Definition"]
+	if envVars ~= nil then
+		for var, val in pairs(envVars) do
+			env[var] = val
+		end
+	end
+
 	local args = bootOption["OS Args"]
+	local OS = loadfile(bootOption["OS Boot Path"], nil, env)()
 	if args == nil then
-		loadfile(bootOption["OS Boot Path"])()()
+		OS()
 	elseif type(args) == "table" then
-		loadfile(bootOption["OS Boot Path"])()(table.unpack(args))
+		OS(table.unpack(args))
 	else
-		loadfile(bootOption["OS Boot Path"])()(args)
+		OS(args)
 	end
 	render()
 end

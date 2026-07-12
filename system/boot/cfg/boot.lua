@@ -5,8 +5,8 @@ return {
 		["OS Description"] = "The UsUsOS Operating System",
 		["OS Boot Path"] = "0:system:/ususos.lua",
 		["OS Environment Variable Definition"] = { --optional
-			["EXAMPLEVAR"] = 0,
-			["VAR2"] = "Hi",
+			["EXAMPLEVAR"] = 1,
+			["VAR2"] = "Hello",
 		},
 	},
 	[2] = {
@@ -16,7 +16,7 @@ return {
 		["OS Args"] = "-v -f", --optional
 		["OS Boot Path"] = "0:system:/ususos.lua",
 		["OS Environment Variable Definition"] = { --optional
-			["EXAMPLEVAR"] = 0,
+			["EXAMPLEVAR"] = 2,
 			["VAR2"] = "Hi",
 		},
 	},
@@ -27,8 +27,8 @@ return {
 		["OS Args"] = { "-v", "-f" }, --optional
 		["OS Boot Path"] = "0:system:/ususos.lua",
 		["OS Environment Variable Definition"] = { --optional
-			["EXAMPLEVAR"] = 0,
-			["VAR2"] = "Hi",
+			["EXAMPLEVAR"] = 3,
+			["VAR2"] = "Hippy",
 		},
 	},
 }
