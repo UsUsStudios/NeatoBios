@@ -117,7 +117,7 @@ end
 
 local function loadBootCfg()
 	for _, disk in pairs(files.getDisks()) do
-		local diskCfg = loadfile(disk .. ":system:/boot/cfg/boot.lua")()
+		local diskCfg = loadfile(disk .. ":system:/boot/cfg/boot.lua", nil, {})()
 		if disk == 0 then
 			selectedOption = diskCfg["Config"]["DefaultEntry"]
 		end
