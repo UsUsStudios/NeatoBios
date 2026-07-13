@@ -22,14 +22,18 @@ local _G_COPY = deepCopy(_G)
 
 -- Load jojotastic777's files shim and require shim
 do
-	local handle = files.open("bios:/files-shim.lua")
+	local handle = files.open("neatobios:/files-shim.lua")
 	local data = handle.read("a")
 	handle.close()
-	load(data, "0:bios:/files-shim.lua")()
-	loadfile("0:bios:/require.lua")()
+	load(data, "0:neatobios:/files-shim.lua")()
+	loadfile("0:neatobios:/require.lua")()
+
+	package.path = table.concat({
+		"0:neatobios:/?.lua",
+	}, ";")
 end
 
-local font = require("psf")("0:bios:/Lat15-VGA16.psf")
+local font = require("psf")("0:neatobios:/Lat15-VGA16.psf")
 local fontHeight = font.getHeight()
 local fontWidth = font.getWidth()
 local screenWidth, screenHeight = screen.getSize()
@@ -121,8 +125,6 @@ end
 local function main()
 	loadBootCfg()
 
-	local prevSelectedOption = 0
-
 	while true do
 		local data = event.getFirst("user", "keyPressed")
 		while data ~= nil do
@@ -137,10 +139,7 @@ local function main()
 
 			data = event.getFirst("user", "keyPressed")
 		end
-		if selectedOption ~= prevSelectedOption then
-			render()
-		end
-		prevSelectedOption = selectedOption
+		render()
 	end
 end
 
