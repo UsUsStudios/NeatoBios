@@ -111,12 +111,22 @@ local function launchBootOption(bootOption)
 	else
 		OS(args)
 	end
+	chip.shutdown()
 	render()
 end
 
 local function loadBootCfg()
 	for _, disk in pairs(files.getDisks()) do
-		for _, bootOption in ipairs(loadfile(disk .. ":system:/boot/cfg/boot.lua")()) do
+		local diskCfg = loadfile(disk .. ":system:/boot/cfg/boot.lua")()
+		if disk == 0 then
+			selectedOption = diskCfg["Config"]["DefaultEntry"]
+		end
+		local autoboot = diskCfg["Config"]["Autoboot"]
+		if type(autoboot) == "number" then
+			launchBootOption(diskCfg["Bootlist"][autoboot])
+		end
+
+		for _, bootOption in ipairs(diskCfg["Bootlist"]) do
 			table.insert(bootCfg, bootOption)
 		end
 	end
