@@ -123,10 +123,10 @@ local function init()
 
 	-- load psf renderer
 	do
-		local handle = files.open("neatobios:/psf.lua")
+		local handle = files.open("neatobios:/common/psf.lua")
 		local data = handle.read("a")
 		handle.close()
-		font = load(data, "neatobios:/psf.lua")()("neatobios:/Lat15-VGA16.psf")
+		font = load(data, "neatobios:/common/psf.lua")()("neatobios:/assets/Lat15-VGA16.psf")
 
 		fontHeight = font.getHeight()
 		fontWidth = font.getWidth()
@@ -142,29 +142,20 @@ local function init()
 	do
 		font.drawLine(3, 3 + fontHeight * 2, "[NEATOBIOS] [INFO] Loading files shim", options)
 		screen.draw()
-		local handle = files.open("neatobios:/files-shim.lua")
+		local handle = files.open("neatobios:/common/files-shim.lua")
 		local data = handle.read("a")
 		handle.close()
-		load(data, "0:neatobios:/files-shim.lua")()
-		font.drawLine(3, 3 + fontHeight * 3, "[NEATOBIOS] [INFO] Loading require implementation", options)
-		screen.draw()
-		loadfile("0:neatobios:/require.lua")()
-
-		font.drawLine(3, 3 + fontHeight * 4, "[NEATOBIOS] [INFO] Setting package.path", options)
-		screen.draw()
-		package.path = table.concat({
-			"0:neatobios:/?.lua",
-		}, ";")
+		load(data, "0:neatobios:/common/files-shim.lua")()
 	end
 
-	font.drawLine(3, 3 + fontHeight * 5, "[NEATOBIOS] [INFO] Loading boot configs", options)
+	font.drawLine(3, 3 + fontHeight * 3, "[NEATOBIOS] [INFO] Loading boot configs", options)
 	screen.draw()
 	loadBootCfg()
 
-	font.drawLine(3, 3 + fontHeight * 6, "[NEATOBIOS] [INFO] Starting NeatoBios", options)
+	font.drawLine(3, 3 + fontHeight * 4, "[NEATOBIOS] [INFO] Starting NeatoBios", options)
 	screen.draw()
 
-	require("benchmarks.binarytrees")(1)
+	loadfile("neatobios:/benchmarks/array3d.lua")()(5)
 end
 
 local function main()

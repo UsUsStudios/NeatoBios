@@ -20,7 +20,7 @@
 -- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-local color = loadfile("neatobios:/color.lua")()
+local color = loadfile("neatobios:/common/color.lua")()
 
 local byte = string.byte
 local band = bit32.band

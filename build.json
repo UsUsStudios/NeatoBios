@@ -1,5 +1,5 @@
 {
-    "entrypoint": "neatobios:boot.lua",
+    "entrypoint": "neatobios:bios.lua",
     "language": "Lua",
     "partitions": [
         {
