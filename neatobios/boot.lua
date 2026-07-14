@@ -18,24 +18,11 @@ local function deepCopy(obj, seen)
 	return copy
 end
 
-local _G_COPY = deepCopy(_G)
+local font
+local _G_COPY
 
--- Load jojotastic777's files shim and require shim
-do
-	local handle = files.open("neatobios:/files-shim.lua")
-	local data = handle.read("a")
-	handle.close()
-	load(data, "0:neatobios:/files-shim.lua")()
-	loadfile("0:neatobios:/require.lua")()
-
-	package.path = table.concat({
-		"0:neatobios:/?.lua",
-	}, ";")
-end
-
-local font = require("psf")("0:neatobios:/Lat15-VGA16.psf")
-local fontHeight = font.getHeight()
-local fontWidth = font.getWidth()
+local fontHeight
+local fontWidth
 local screenWidth, screenHeight = screen.getSize()
 
 local bootCfg = {}
@@ -112,7 +99,6 @@ local function launchBootOption(bootOption)
 		OS(args)
 	end
 	chip.shutdown()
-	render()
 end
 
 local function loadBootCfg()
@@ -132,9 +118,56 @@ local function loadBootCfg()
 	end
 end
 
-local function main()
+local function init()
+	local options = { foreground = 0x2cd30eff }
+
+	-- load psf renderer
+	do
+		local handle = files.open("neatobios:/psf.lua")
+		local data = handle.read("a")
+		handle.close()
+		font = load(data, "neatobios:/psf.lua")()("neatobios:/Lat15-VGA16.psf")
+
+		fontHeight = font.getHeight()
+		fontWidth = font.getWidth()
+	end
+	font.drawLine(3, 3, "[NEATOBIOS] [INFO] Loaded psf renderer", options)
+	screen.draw()
+
+	font.drawLine(3, 3 + fontHeight * 1, "[NEATOBIOS] [INFO] Copying _G", options)
+	screen.draw()
+	_G_COPY = deepCopy(_G)
+
+	-- Load jojotastic777's files shim and require shim
+	do
+		font.drawLine(3, 3 + fontHeight * 2, "[NEATOBIOS] [INFO] Loading files shim", options)
+		screen.draw()
+		local handle = files.open("neatobios:/files-shim.lua")
+		local data = handle.read("a")
+		handle.close()
+		load(data, "0:neatobios:/files-shim.lua")()
+		font.drawLine(3, 3 + fontHeight * 3, "[NEATOBIOS] [INFO] Loading require implementation", options)
+		screen.draw()
+		loadfile("0:neatobios:/require.lua")()
+
+		font.drawLine(3, 3 + fontHeight * 4, "[NEATOBIOS] [INFO] Setting package.path", options)
+		screen.draw()
+		package.path = table.concat({
+			"0:neatobios:/?.lua",
+		}, ";")
+	end
+
+	font.drawLine(3, 3 + fontHeight * 5, "[NEATOBIOS] [INFO] Loading boot configs", options)
+	screen.draw()
 	loadBootCfg()
 
+	font.drawLine(3, 3 + fontHeight * 6, "[NEATOBIOS] [INFO] Starting NeatoBios", options)
+	screen.draw()
+
+	require("benchmarks.binarytrees")(1)
+end
+
+local function main()
 	while true do
 		local data = event.getFirst("user", "keyPressed")
 		while data ~= nil do
@@ -170,4 +203,5 @@ local function benchmark()
 	print("Test suite finished in " .. chip.getTime() - start .. " seconds")
 end
 
+init()
 main()
