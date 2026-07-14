@@ -45,7 +45,6 @@ local function drawBootOptions()
 		end
 
 		font.drawLine(3 + fontWidth * 4, 3 + fontHeight * (5 + k), v["OS Name"] .. " v" .. v["OS Version"], options)
-		font.drawLine(3 + fontWidth * 27, 3 + fontHeight * (5 + k), v["OS Boot Path"], options)
 		font.drawRightAlignedLine(
 			screenWidth - 3 - fontWidth * 4,
 			3 + fontHeight * (5 + k),

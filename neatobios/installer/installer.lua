@@ -1,5 +1,5 @@
 local function main()
-	print("booted ususos")
+	print("installer")
 end
 
 return main

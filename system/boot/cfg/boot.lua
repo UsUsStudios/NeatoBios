@@ -5,36 +5,10 @@ return {
 	},
 	["Bootlist"] = {
 		{
-			["OS Name"] = "UsUsOS",
-			["OS Version"] = "1.2.3", -- semver style (possibly?) enforced
-			["OS Description"] = "The UsUsOS Operating System",
-			["OS Boot Path"] = "0:system:/ususos.lua",
-			["OS Environment Variable Definition"] = { --optional
-				["EXAMPLEVAR"] = 1,
-				["VAR2"] = "Hello",
-			},
-		},
-		{
-			["OS Name"] = "UsUsOS",
-			["OS Version"] = "2.2.2", -- semver style (possibly?) enforced
-			["OS Description"] = "The UsUsOS Operating System",
-			["OS Args"] = "-v -f", --optional
-			["OS Boot Path"] = "0:system:/ususos.lua",
-			["OS Environment Variable Definition"] = { --optional
-				["EXAMPLEVAR"] = 2,
-				["VAR2"] = "Hi",
-			},
-		},
-		{
-			["OS Name"] = "UsUsOS",
-			["OS Version"] = "3.2.1", -- semver style (possibly?) enforced
-			["OS Description"] = "The UsUsOS Operating System",
-			["OS Args"] = { "-v", "-f" }, --optional
-			["OS Boot Path"] = "0:system:/ususos.lua",
-			["OS Environment Variable Definition"] = { --optional
-				["EXAMPLEVAR"] = 3,
-				["VAR2"] = "Hippy",
-			},
+			["OS Name"] = "OS Installer",
+			["OS Version"] = "1.0.0", -- semver style (possibly?) enforced
+			["OS Description"] = "Install a supported OS from the internet",
+			["OS Boot Path"] = "0:neatobios:/installer/installer.lua",
 		},
 	},
 }
