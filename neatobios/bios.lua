@@ -133,28 +133,34 @@ local function init()
 	font.drawLine(3, 3, "[NEATOBIOS] [INFO] Loaded psf renderer", options)
 	screen.draw()
 
-	font.drawLine(3, 3 + fontHeight * 1, "[NEATOBIOS] [INFO] Copying _G", options)
-	screen.draw()
-	_G_COPY = deepCopy(_G)
-
-	-- Load jojotastic777's files shim
+	-- Load jojotastic777's files shim and require
 	do
-		font.drawLine(3, 3 + fontHeight * 2, "[NEATOBIOS] [INFO] Loading files shim", options)
+		font.drawLine(3, 3 + fontHeight * 1, "[NEATOBIOS] [INFO] Loading files shim", options)
 		screen.draw()
 		local handle = files.open("neatobios:/common/files-shim.lua")
 		local data = handle.read("a")
 		handle.close()
 		load(data, "0:neatobios:/common/files-shim.lua")()
+
+		font.drawLine(3, 3 + fontHeight * 2, "[NEATOBIOS] [INFO] Loading require implementation", options)
+		screen.draw()
+		loadfile("0:neatobios:/common/require.lua")()
+
+		font.drawLine(3, 3 + fontHeight * 3, "[NEATOBIOS] [INFO] Setting package.path", options)
+		screen.draw()
+		package.path = table.concat({ "0:neatobios:/common/?.lua", "0:neatobios:/?.lua" }, ";")
 	end
 
-	font.drawLine(3, 3 + fontHeight * 3, "[NEATOBIOS] [INFO] Loading boot configs", options)
+	font.drawLine(3, 3 + fontHeight * 4, "[NEATOBIOS] [INFO] Copying _G", options)
+	screen.draw()
+	_G_COPY = deepCopy(_G)
+
+	font.drawLine(3, 3 + fontHeight * 5, "[NEATOBIOS] [INFO] Loading boot configs", options)
 	screen.draw()
 	loadBootCfg()
 
-	font.drawLine(3, 3 + fontHeight * 4, "[NEATOBIOS] [INFO] Starting NeatoBios", options)
+	font.drawLine(3, 3 + fontHeight * 6, "[NEATOBIOS] [INFO] Starting NeatoBios", options)
 	screen.draw()
-
-	loadfile("neatobios:/benchmarks/array3d.lua")()(5)
 end
 
 local function main()
@@ -179,17 +185,17 @@ end
 local function benchmark()
 	local start = chip.getTime()
 	print("Test suite started")
-	require("benchmarks.binarytrees")(10)
+	require("benchmarks/binarytrees")(10)
 	print(chip.getTime() - start)
-	require("benchmarks.array3d")(130)
+	require("benchmarks/array3d")(130)
 	print(chip.getTime() - start)
-	require("benchmarks.chameos")(200000)
+	require("benchmarks/chameos")(200000)
 	print(chip.getTime() - start)
-	require("benchmarks.coroutine_ring")(500000)
+	require("benchmarks/coroutine_ring")(500000)
 	print(chip.getTime() - start)
-	require("benchmarks.fannkuch_redux")(50)
+	require("benchmarks/fannkuch_redux")(50)
 	print(chip.getTime() - start)
-	require("benchmarks.fasta")(90)
+	require("benchmarks/fasta")(90)
 	print("Test suite finished in " .. chip.getTime() - start .. " seconds")
 end
 
