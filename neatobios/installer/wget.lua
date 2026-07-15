@@ -27,6 +27,7 @@ local function waitForHttpResponse(id)
 		if eventId == id then
 			return true, event
 		end
+		event.queueEvent("network", "HttpResponse", table.unpack(event))
 	end
 	return false
 end
