@@ -137,7 +137,7 @@ local function init()
 	screen.draw()
 	_G_COPY = deepCopy(_G)
 
-	-- Load jojotastic777's files shim and require shim
+	-- Load jojotastic777's files shim
 	do
 		font.drawLine(3, 3 + fontHeight * 2, "[NEATOBIOS] [INFO] Loading files shim", options)
 		screen.draw()
