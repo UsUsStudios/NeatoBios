@@ -89,7 +89,7 @@ local function launchBootOption(bootOption)
 	end
 
 	local args = bootOption["OS Args"]
-	local OS = loadfile(bootOption["OS Boot Path"], nil, env)()
+	local OS = loadfile(bootOption["OS Boot Path"], nil, env)
 	if args == nil then
 		OS()
 	elseif type(args) == "table" then

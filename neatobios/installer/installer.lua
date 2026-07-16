@@ -111,4 +111,4 @@ local function main()
 	end
 end
 
-return main
+main()
