@@ -20,6 +20,8 @@
 -- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
+local queueEvent = event.queueEvent
+
 local function waitForHttpResponse(id)
 	local queue = event.getQueue("network", "HttpResponse")
 	for _, event in ipairs(queue) do
@@ -27,13 +29,14 @@ local function waitForHttpResponse(id)
 		if eventId == id then
 			return true, event
 		end
-		event.queueEvent("network", "HttpResponse", table.unpack(event))
+		queueEvent("network", "HttpResponse", table.unpack(event))
 	end
 	return false
 end
 
 local function retrieveHTTPResponse(id)
 	local found, response = false, nil
+	event.clear()
 	while not found do
 		found, response = waitForHttpResponse(id)
 		coroutine.yield()
@@ -46,6 +49,7 @@ local function retrieveHTTPResponse(id)
 		return headers, body
 	end
 	print(code .. ": " .. msg)
+	return code, msg
 end
 
 local function wget(url, filename)
@@ -57,11 +61,15 @@ local function wget(url, filename)
 	local id = internet.GET(formattedUrl)
 
 	local headers, body = retrieveHTTPResponse(id)
-	if headers ~= nil then
-		local header = files.open(filename, "w", 0)
-		header.write(body)
-		header.close()
+	-- check if headers is actually a status code
+	if type(headers) == "number" then
+		return false
 	end
+
+	local header = files.open(filename, "w", 0)
+	header.write(body)
+	header.close()
+	return true
 end
 
 return wget
