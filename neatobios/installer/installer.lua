@@ -92,6 +92,8 @@ local function main()
 				coroutine.yield()
 			end
 
+			loadfile("0:system:/temp/installer.lua")()
+
 			files.delete("0:system:/temp/installer.lua")
 			return
 		else
