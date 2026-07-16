@@ -4,7 +4,7 @@
     "partitions": [
         {
             "path": "neatobios",
-            "readonly": false,
+            "readonly": true,
             "hidden": false
         },
         {
