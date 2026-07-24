@@ -87,6 +87,8 @@ local function launchBootOption(bootOption)
 			env[var] = val
 		end
 	end
+	env.files = env.oldFiles
+	env.oldFiles = nil
 
 	local args = bootOption["OS Args"]
 	local OS = loadfile(bootOption["OS Boot Path"], nil, env)
